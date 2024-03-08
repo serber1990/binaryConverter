@@ -48,7 +48,7 @@ convert_from_binary() {
     done
     
     # Print the decimal representation in yellow color
-    echo -e "\n${YELLOW}Decimal representation: $decimal${RESET}"
+    echo -e "\n${YELLOW}Decimal representation: ${RESET}$decimal"
     
     # Copy the decimal result to clipboard
     echo -n "$decimal" | xclip -selection clipboard
