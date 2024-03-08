@@ -8,6 +8,7 @@ Decimal to binary:
 
 Binary to decimal:
 
-![image](https://github.com/serber1990/binaryConverter/assets/39016027/0adea511-e677-4aff-b658-850ff5248030)
+![image](https://github.com/serber1990/binaryConverter/assets/39016027/2868f7de-7994-4164-8754-aa60285dcf66)
+
 
 Add this script as a function in your .zshrc to use it more easily.
