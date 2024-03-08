@@ -12,6 +12,6 @@ Binary to decimal:
 
 ![image](https://github.com/serber1990/binaryConverter/assets/39016027/f0836a64-c437-4924-9d12-a3c6a6ae7490)
 
-![image](https://github.com/serber1990/binaryConverter/assets/39016027/11d3e7ab-b553-4992-951b-7afb235d4081)
+![image](https://github.com/serber1990/binaryConverter/assets/39016027/0adea511-e677-4aff-b658-850ff5248030)
 
 Add this script as a function in your .zshrc to use it more easily.
