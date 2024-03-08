@@ -1,6 +1,6 @@
 How to use:
 
-1) Execute the script and it will prompt you to select wheather you want to conver to Binary or to Decimal
+1) Execute the script and it will prompt you to select whether you want to convert to Binary or to Decimal
 
 Decimal to binary:
 
