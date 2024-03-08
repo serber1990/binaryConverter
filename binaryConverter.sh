@@ -36,17 +36,15 @@ convert_to_binary() {
 convert_from_binary() {
     binary=$1
     decimal=0
-    power=0
     
     # Iterate over each bit of the binary number
     for ((i=${#binary}-1; i>=0; i--)); do
         bit="${binary:$i:1}"  # Get each bit from right to left
         
         # If the bit is 1, add the corresponding power of 2 to the decimal value
-        if [ "$bit" -eq 1 ]; then
-            decimal=$((decimal + 2**power))
+        if [ "$bit" == "1" ]; then
+            decimal=$((decimal + 2 ** (${#binary} - i - 1)))
         fi
-        power=$((power + 1))  # Increment the power for the next bit
     done
     
     # Print the decimal representation in yellow color
@@ -78,12 +76,12 @@ while true; do
             break  # Exit the loop
         fi
     elif [ "$option" == "2" ]; then
-        echo -e "${RESET}Enter an 8-bit ${BLUE}binary${RESET} number:"
+        echo -e "${RESET}Enter a ${BLUE}binary${RESET} number:"
         read binary_input
         
-        # Validate the input as an 8-bit binary number
-        if ! [[ "$binary_input" =~ ^[01]{8}$ ]]; then
-            echo -e "\n${RED}Invalid input. Please enter a valid 8-bit binary number.${RESET}"
+        # Validate the input as a binary number
+        if ! [[ "$binary_input" =~ ^[01]+$ ]]; then
+            echo -e "\n${RED}Invalid input. Please enter a valid binary number.${RESET}"
         else
             convert_from_binary $binary_input  # Convert the binary to decimal
             break  # Exit the loop
@@ -95,4 +93,3 @@ while true; do
         echo -e "\n${RED}Invalid option.${RESET}"
     fi
 done
-
