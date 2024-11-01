@@ -19,7 +19,7 @@ Clone the repository and install `colorize-term`:
 
 ```bash
 git clone https://github.com/serber1990/binaryConverter.git
-cd binaryConverter
+cd binaryConverter/python
 pip install colorize-term
 ```
 
