@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-from colorize_term import Color
+from shellcolorize import Color
 from pwn import log, context
 
 # Set context for pwntools (optional)
