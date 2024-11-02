@@ -20,6 +20,7 @@ This repository contains the following two versions:
 To use the Python version, navigate to the `python/` directory and run:
 
 ```bash
+pip install shellcolorize
 cd python
 python binary_converter.py
 ```
