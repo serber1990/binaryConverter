@@ -1,6 +1,6 @@
 # Binary Converter
 
-Binary Converter is a Python command-line tool for converting decimal numbers to binary and binary numbers to decimal. The tool also uses the `colorize-term` library to enhance terminal output with colors.
+Binary Converter is a Python command-line tool for converting decimal numbers to binary and binary numbers to decimal. The tool also uses the `shellcolorize` library to enhance terminal output with colors.
 
 ---
 
@@ -9,18 +9,18 @@ Binary Converter is a Python command-line tool for converting decimal numbers to
 - 🔢 **Convert Decimal to Binary**: Converts any decimal number into an 8-bit binary representation.
 - 🔠 **Convert Binary to Decimal**: Converts binary numbers back into decimal format.
 - 📋 **Clipboard Support**: Automatically copies results to the clipboard (requires `xclip` on Linux).
-- 🌈 **Colorized Output**: Uses the `colorize-term` library for colorful terminal output.
+- 🌈 **Colorized Output**: Uses the `shellcolorize` library for colorful terminal output.
 
 ---
 
 ## 📥 Installation
 
-Clone the repository and install `colorize-term`:
+Clone the repository and install `shellcolorize`:
 
 ```bash
 git clone https://github.com/serber1990/binaryConverter.git
 cd binaryConverter/python
-pip install colorize-term
+pip install shellcolorize
 ```
 
 For clipboard functionality on Linux, make sure `xclip` is installed:
@@ -36,7 +36,7 @@ sudo apt-get install xclip
 Run the script with:
 
 ```bash
-python binary_converter.py
+python binaryConverter.py
 ```
 
 ### Options
