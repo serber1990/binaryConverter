@@ -33,36 +33,41 @@ def convert_from_binary(binary):
 
 # Main loop to provide options to the user
 def main():
-    banner_text = f"{Color.GREEN}Welcome to Binary Converter!{Color.RESET}"
-    log.info(banner_text.center(50, '-'))
-    
-    while True:
-        print(f"\n{Color.CYAN}Choose an option:{Color.RESET}")
-        print(f"{Color.MAGENTA}1. Convert {Color.YELLOW}decimal{Color.MAGENTA} to binary{Color.RESET}")
-        print(f"{Color.MAGENTA}2. Convert {Color.BLUE}binary{Color.MAGENTA} to decimal{Color.RESET}")
-        print(f"{Color.MAGENTA}q. To {Color.RED}Quit{Color.RESET}")
+    try:
+        banner_text = f"{Color.GREEN}Welcome to Binary Converter!{Color.RESET}"
+        log.info(banner_text.center(50, '-'))
         
-        option = input(f"{Color.GREEN}> {Color.RESET}")
+        while True:
+            print(f"\n{Color.CYAN}Choose an option:{Color.RESET}")
+            print(f"1. Convert {Color.YELLOW}decimal{Color.RESET} to binary")
+            print(f"2. Convert {Color.BLUE}binary{Color.RESET} to decimal")
+            print(f"(q). To {Color.RED}Quit{Color.RESET}")
+            
+            option = input(f"{Color.GREEN}> {Color.RESET}")
 
-        if option == "1":
-            decimal_input = input(f"Enter a {Color.YELLOW}decimal{Color.RESET} number: ")
-            if not decimal_input.isdigit():
-                log.failure(f"{Color.RED}Invalid input. Please enter a valid decimal number.{Color.RESET}")
-            else:
-                convert_to_binary(int(decimal_input))
+            if option == "1":
+                decimal_input = input(f"Enter a {Color.YELLOW}decimal{Color.RESET} number: ")
+                if not decimal_input.isdigit():
+                    log.failure(f"{Color.RED}Invalid input. Please enter a valid decimal number.{Color.RESET}")
+                else:
+                    convert_to_binary(int(decimal_input))
+                    break
+            elif option == "2":
+                binary_input = input(f"Enter a {Color.BLUE}binary{Color.RESET} number: ")
+                if not all(bit in "01" for bit in binary_input):
+                    log.failure(f"{Color.RED}Invalid input. Please enter a valid binary number.{Color.RESET}")
+                else:
+                    convert_from_binary(binary_input)
+                    break
+            elif option.lower() == "q":
+                log.info(f"{Color.GREEN}Exiting...{Color.RESET}")
                 break
-        elif option == "2":
-            binary_input = input(f"Enter a {Color.BLUE}binary{Color.RESET} number: ")
-            if not all(bit in "01" for bit in binary_input):
-                log.failure(f"{Color.RED}Invalid input. Please enter a valid binary number.{Color.RESET}")
             else:
-                convert_from_binary(binary_input)
-                break
-        elif option.lower() == "q":
-            log.info(f"{Color.GREEN}Exiting...{Color.RESET}")
-            break
-        else:
-            log.failure(f"{Color.RED}Invalid option.{Color.RESET}")
+                log.failure(f"{Color.RED}Invalid option.{Color.RESET}")
+    
+    except KeyboardInterrupt:
+        log.info(f"{Color.RESET}Exiting...{Color.RESET}")
 
 if __name__ == "__main__":
     main()
+
