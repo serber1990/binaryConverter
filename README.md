@@ -39,7 +39,7 @@ chmod +x binary_converter.sh
 
 ## 💻 About Each Version
 
-- **Python Version**: This version utilizes the `colorize-term` library for colorful terminal output and provides a more robust, user-friendly experience. Ideal for those familiar with Python or those needing a cross-platform solution.
+- **Python Version**: This version utilizes the `shellcolorize` library for colorful terminal output and provides a more robust, user-friendly experience. Ideal for those familiar with Python or those needing a cross-platform solution.
 
 - **Bash Version**: This script is lighter and designed for quick operations directly in the terminal. It’s a great choice if you’re working in a Unix/Linux environment and prefer simplicity.
 
