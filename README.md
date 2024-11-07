@@ -1,6 +1,6 @@
 # Binary Converter
 
-Binary Converter is a versatile tool (😂😂😂) for converting between binary and decimal numbers. This repository offers both **Python** and **Bash** implementations, so you can choose the version that best suits your needs.
+Binary Converter is a very simple and easy to use tool, for converting between binary and decimal numbers. This repository offers both **Python** and **Bash** implementations, so you can choose the version that best suits your needs.
 
 ---
 
