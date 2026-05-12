@@ -1,64 +1,119 @@
-# Binary Converter
+# binaryConverter — Number Base Converter
 
-Binary Converter is a very simple and easy to use tool, for converting between binary and decimal numbers. This repository offers both **Python** and **Bash** implementations, so you can choose the version that best suits your needs.
+[![PyPI version](https://badge.fury.io/py/numbase-converter.svg)](https://badge.fury.io/py/numbase-converter)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/serber1990/binaryConverter?style=social)](https://github.com/serber1990/binaryConverter/stargazers)
 
----
-
-## 🗂 Repository Overview
-
-This repository contains the following two versions:
-
-- [**Python Version**](https://github.com/serber1990/binaryConverter/tree/main/python): A feature-rich Python script with clipboard support and colorized output.
-- [**Bash Version**](https://github.com/serber1990/binaryConverter/tree/main/bash): A simple and lightweight Bash script with clipboard support and colored terminal output.
+Convert between **decimal**, **binary**, **hexadecimal** and **octal** — all at once, in one command. Available as both a Python CLI tool and a Bash script.
 
 ---
 
-## 🚀 Quick Start Guide
+## ✨ Features
 
-### Python Version
+- 🔄 **All bases at once** — enter a number in any base, see DEC / BIN / HEX / OCT simultaneously
+- 🔍 **Auto-detection** — prefix-based input: `255`, `0b1010`, `0xFF`, `0o17`
+- ♾️ **Continuous loop** — convert multiple numbers without restarting
+- 📋 **Clipboard support** — result copied automatically (`xclip`, `xsel` or `pbcopy`)
+- 🖥️ **Two versions** — Python (`numbase`) and Bash (`binaryConverter.sh`)
 
-To use the Python version, navigate to the `python/` directory and run:
+---
+
+## 📥 Installation
+
+### Python (recommended)
 
 ```bash
-pip install shellcolorize
-cd python
-python binary_converter.py
+pip install numbase-converter
 ```
 
-### Bash Version
-
-To use the Bash version, navigate to the `bash/` directory, make the script executable, and run:
+### Bash
 
 ```bash
-cd bash
-chmod +x binary_converter.sh
-./binary_converter.sh
+git clone https://github.com/serber1990/binaryConverter.git
+chmod +x binaryConverter/bash/binaryConverter.sh
+./binaryConverter/bash/binaryConverter.sh
 ```
 
 ---
 
-## 💻 About Each Version
+## 🛠 Usage
 
-- **Python Version**: This version utilizes the `shellcolorize` library for colorful terminal output and provides a more robust, user-friendly experience. Ideal for those familiar with Python or those needing a cross-platform solution.
+### Interactive mode
 
-- **Bash Version**: This script is lighter and designed for quick operations directly in the terminal. It’s a great choice if you’re working in a Unix/Linux environment and prefer simplicity.
+```bash
+numbase
+```
+
+```
+  ╔══════════════════════════╗
+  ║  Number Base Converter   ║
+  ╚══════════════════════════╝
+
+  Accepts:  255   0b1010   0xFF   0o17   ·   q to quit
+
+  > 255
+
+  ╭──────────────────────╮
+  │  DEC  255            │
+  │  BIN  1111 1111      │
+  │  HEX  FF             │
+  │  OCT  377            │
+  ╰──────────────────────╯
+  ✔  Copied: 11111111
+```
+
+### One-shot mode
+
+```bash
+numbase 255
+numbase 0xFF
+numbase 0b11001010
+numbase 0o377
+```
+
+### Copy a specific format
+
+```bash
+numbase 255 --copy hex     # copies FF to clipboard
+numbase 0xFF --copy dec    # copies 255 to clipboard
+```
 
 ---
 
-## 📜 License
+## 🎨 Input formats
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for more information.
+| Format | Example | Description |
+|--------|---------|-------------|
+| Decimal | `255` | Plain number |
+| Binary | `0b11111111` | Prefix `0b` or `0B` |
+| Hexadecimal | `0xFF` | Prefix `0x` or `0X` |
+| Octal | `0o377` | Prefix `0o` or `0O` |
 
 ---
 
-## 📬 Feedback & Contributions
+## 🗂 Repository structure
 
-If you encounter any issues, have suggestions, or would like to contribute, feel free to open an issue or submit a pull request.
+```
+binaryConverter/
+├── numbase.py          Python CLI (pip-installable as numbase)
+├── bash/
+│   └── binaryConverter.sh   Bash version
+└── python/
+    └── binaryConverter.py   Compatibility shim → numbase
+```
 
-## 🌐 Connect with Me
+---
+
+## 📝 License
+
+MIT — see [LICENSE](LICENSE).
+
+---
+
+## 💬 Feedback
+
+Open an issue or reach out via GitHub.
+
+## 🌐 Connect
 
 [![GitHub](https://img.shields.io/badge/GitHub-@serber1990-181717?style=flat-square&logo=github)](https://github.com/serber1990)
-
----
-
-### 🚀 Easily convert between binary and decimal with Binary Converter!

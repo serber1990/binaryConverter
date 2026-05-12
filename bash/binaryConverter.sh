@@ -1,95 +1,159 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# binaryConverter — interactive base converter (DEC ↔ BIN ↔ HEX ↔ OCT)
 
-# Color codes for easy visualization
-GREEN="\033[1;32m"
-BLUE="\033[1;34m"
-YELLOW="\033[1;33m"
-RED="\033[1;31m"
-RESET="\033[0m"
+C_CYAN="\033[0;36m"
+C_GREEN="\033[0;32m"
+C_YELLOW="\033[1;33m"
+C_MAGENTA="\033[0;35m"
+C_RED="\033[0;31m"
+C_BOLD="\033[1m"
+C_DIM="\033[2m"
+C_RESET="\033[0m"
 
-# Function to convert decimal to binary
-convert_to_binary() {
-    decimal=$1
-    binary=""  # Initialize an empty string to store binary digits
-    
-    # Convert decimal to binary
-    while [ $decimal -gt 0 ]; do
-        remainder=$((decimal % 2))  # Get the remainder when dividing by 2
-        binary="${remainder}${binary}"  # Prepend the remainder to the binary string
-        decimal=$((decimal / 2))  # Update the decimal by integer division by 2
-    done
-    
-    # Ensure the binary representation is 8 bits long
-    while [ ${#binary} -lt 8 ]; do
-        binary="0${binary}"  # Prepend '0's to make it 8 bits long
-    done
-    
-    # Print the binary representation in blue color
-    echo -e "\n${BLUE}Binary representation: ${RESET}$binary"
-    
-    # Copy the binary result to clipboard
-    echo -n "$binary" | xclip -selection clipboard
-    echo -e "\n${GREEN}Binary result copied to clipboard.${RESET}"
-}
+# ── Clipboard ─────────────────────────────────────────────────────────────────
 
-# Function to convert binary to decimal
-convert_from_binary() {
-    binary=$1
-    decimal=0
-    
-    # Iterate over each bit of the binary number
-    for ((i=${#binary}-1; i>=0; i--)); do
-        bit="${binary:$i:1}"  # Get each bit from right to left
-        
-        # If the bit is 1, add the corresponding power of 2 to the decimal value
-        if [ "$bit" == "1" ]; then
-            decimal=$((decimal + 2 ** (${#binary} - i - 1)))
-        fi
-    done
-    
-    # Print the decimal representation in yellow color
-    echo -e "\n${YELLOW}Decimal representation: ${RESET}$decimal"
-    
-    # Copy the decimal result to clipboard
-    echo -n "$decimal" | xclip -selection clipboard
-    echo -e "\n${GREEN}Decimal result copied to clipboard.${RESET}"
-}
-
-# Main loop to provide options to the user
-while true; do
-    echo -e "\n${BLUE}Choose an option:${RESET}"
-    echo -e "1. Convert ${YELLOW}decimal${RESET} to binary"
-    echo -e "2. Convert ${BLUE}binary${RESET} to decimal"
-    echo -e "q. To ${RED}Quit${RESET}"
-    read -p "> " option
-
-    # Perform actions based on user input
-    if [ "$option" == "1" ]; then
-        echo -e "${RESET}Enter a ${YELLOW}decimal${RESET} number:"
-        read decimal_input
-        
-        # Validate the input as a decimal number
-        if ! [[ "$decimal_input" =~ ^[0-9]+$ ]]; then
-            echo -e "\n${RED}Invalid input. Please enter a valid decimal number.${RESET}"
-        else
-            convert_to_binary $decimal_input  # Convert the decimal to binary
-            break  # Exit the loop
-        fi
-    elif [ "$option" == "2" ]; then
-        echo -e "${RESET}Enter a ${BLUE}binary${RESET} number:"
-        read binary_input
-        
-        # Validate the input as a binary number
-        if ! [[ "$binary_input" =~ ^[01]+$ ]]; then
-            echo -e "\n${RED}Invalid input. Please enter a valid binary number.${RESET}"
-        else
-            convert_from_binary $binary_input  # Convert the binary to decimal
-            break  # Exit the loop
-        fi
-    elif [ "$option" == "q" ]; then
-        echo -e "\n${GREEN}Exiting.${RESET}"
-        break  # Exit the loop
-    else
-        echo -e "\n${RED}Invalid option.${RESET}"
+copy_to_clipboard() {
+    local text="$1"
+    if command -v xclip &>/dev/null; then
+        echo -n "$text" | xclip -selection clipboard && return 0
+    elif command -v xsel &>/dev/null; then
+        echo -n "$text" | xsel --clipboard --input && return 0
+    elif command -v pbcopy &>/dev/null; then
+        echo -n "$text" | pbcopy && return 0
     fi
+    return 1
+}
+
+# ── Conversions ───────────────────────────────────────────────────────────────
+
+dec_to_bin() {
+    local n=$1
+    [[ $n -eq 0 ]] && echo "0" && return
+    local result=""
+    while [[ $n -gt 0 ]]; do
+        result="$((n % 2))${result}"
+        n=$((n / 2))
+    done
+    echo "$result"
+}
+
+bin_to_dec() {
+    echo "$((2#$1))"
+}
+
+dec_to_hex() {
+    printf '%X' "$1"
+}
+
+hex_to_dec() {
+    echo "$((16#$1))"
+}
+
+dec_to_oct() {
+    printf '%o' "$1"
+}
+
+oct_to_dec() {
+    echo "$((8#$1))"
+}
+
+# Group binary string in nibbles of 4
+bin_display() {
+    local raw="$1"
+    local pad=$(( (4 - ${#raw} % 4) % 4 ))
+    printf '%0*d%s' "$((${#raw} + pad))" 0 "${raw:0}" 2>/dev/null || echo "$raw"
+    # simpler approach:
+    raw=$(printf '%*s' "$((${#raw} + pad))" "$raw" | tr ' ' '0')
+    local out=""
+    for ((i=0; i<${#raw}; i+=4)); do
+        [[ -n "$out" ]] && out+=" "
+        out+="${raw:$i:4}"
+    done
+    echo "$out"
+}
+
+show_result() {
+    local dec="$1"
+    local bin_r; bin_r=$(dec_to_bin "$dec")
+    local bin_d; bin_d=$(bin_display "$bin_r")
+    local hex; hex=$(dec_to_hex "$dec")
+    local oct; oct=$(dec_to_oct "$dec")
+
+    echo ""
+    echo -e "  ${C_CYAN}╭────────────────────────╮${C_RESET}"
+    echo -e "  ${C_CYAN}│${C_RESET}  ${C_BOLD}${C_GREEN}DEC${C_RESET}  ${C_YELLOW}${dec}${C_RESET}"
+    echo -e "  ${C_CYAN}│${C_RESET}  ${C_BOLD}${C_GREEN}BIN${C_RESET}  ${C_CYAN}${bin_d}${C_RESET}"
+    echo -e "  ${C_CYAN}│${C_RESET}  ${C_BOLD}${C_GREEN}HEX${C_RESET}  ${C_GREEN}${hex}${C_RESET}"
+    echo -e "  ${C_CYAN}│${C_RESET}  ${C_BOLD}${C_GREEN}OCT${C_RESET}  ${C_MAGENTA}${oct}${C_RESET}"
+    echo -e "  ${C_CYAN}╰────────────────────────╯${C_RESET}"
+
+    if copy_to_clipboard "$bin_r"; then
+        echo -e "\n  ${C_DIM}✔  Copied: ${bin_r}${C_RESET}"
+    fi
+    echo ""
+}
+
+# ── Header ────────────────────────────────────────────────────────────────────
+
+echo ""
+echo -e "  ${C_CYAN}╔══════════════════════════╗${C_RESET}"
+echo -e "  ${C_CYAN}║${C_RESET}  ${C_BOLD}${C_CYAN}Number Base Converter${C_RESET}  ${C_CYAN}║${C_RESET}"
+echo -e "  ${C_CYAN}╚══════════════════════════╝${C_RESET}"
+echo ""
+
+# ── Main loop ─────────────────────────────────────────────────────────────────
+
+trap 'echo -e "\n  ${C_DIM}Bye.${C_RESET}\n"; exit 0' INT
+
+while true; do
+    echo -e "  ${C_DIM}Choose input format:${C_RESET}"
+    echo -e "    ${C_GREEN}1${C_RESET}  Decimal   → all bases"
+    echo -e "    ${C_GREEN}2${C_RESET}  Binary    → all bases"
+    echo -e "    ${C_GREEN}3${C_RESET}  Hex       → all bases"
+    echo -e "    ${C_GREEN}4${C_RESET}  Octal     → all bases"
+    echo -e "    ${C_GREEN}q${C_RESET}  Quit"
+    echo ""
+    read -rp "  $(echo -e "${C_GREEN}>${C_RESET}") " option
+
+    case "$option" in
+        1)
+            read -rp "  $(echo -e "${C_YELLOW}Decimal number: ${C_RESET}")" input
+            if ! [[ "$input" =~ ^[0-9]+$ ]]; then
+                echo -e "\n  ${C_RED}✖  Not a valid decimal number.${C_RESET}\n"
+                continue
+            fi
+            show_result "$input"
+            ;;
+        2)
+            read -rp "  $(echo -e "${C_CYAN}Binary number: ${C_RESET}")" input
+            if ! [[ "$input" =~ ^[01]+$ ]]; then
+                echo -e "\n  ${C_RED}✖  Not a valid binary number.${C_RESET}\n"
+                continue
+            fi
+            show_result "$(bin_to_dec "$input")"
+            ;;
+        3)
+            read -rp "  $(echo -e "${C_GREEN}Hex number (without 0x): ${C_RESET}")" input
+            if ! [[ "$input" =~ ^[0-9a-fA-F]+$ ]]; then
+                echo -e "\n  ${C_RED}✖  Not a valid hexadecimal number.${C_RESET}\n"
+                continue
+            fi
+            show_result "$(hex_to_dec "$input")"
+            ;;
+        4)
+            read -rp "  $(echo -e "${C_MAGENTA}Octal number: ${C_RESET}")" input
+            if ! [[ "$input" =~ ^[0-7]+$ ]]; then
+                echo -e "\n  ${C_RED}✖  Not a valid octal number.${C_RESET}\n"
+                continue
+            fi
+            show_result "$(oct_to_dec "$input")"
+            ;;
+        q|Q)
+            echo -e "\n  ${C_DIM}Bye.${C_RESET}\n"
+            exit 0
+            ;;
+        *)
+            echo -e "\n  ${C_RED}✖  Invalid option.${C_RESET}\n"
+            ;;
+    esac
 done
