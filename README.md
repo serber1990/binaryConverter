@@ -8,6 +8,10 @@
 Convert between **decimal**, **binary**, **hexadecimal** and **octal** — all at once, in one command.
 Available as a pip-installable Python CLI (`numbase`) and as a dependency-free Bash script.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/serber1990/binaryConverter/main/docs/demo.gif" alt="numbase demo: converting numbers between decimal, binary, hex and octal" width="820">
+</p>
+
 ---
 
 ## ✨ Features
