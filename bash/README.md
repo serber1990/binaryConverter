@@ -1,105 +1,28 @@
-# Binary Converter (Bash Version)
+# binaryConverter — Bash version
 
-This is a Bash script to convert between decimal and binary numbers. The script includes colored terminal output to improve readability and makes use of the `xclip` tool to copy results to the clipboard.
+Dependency-free Bash implementation of the number base converter. It shows a number in
+decimal, binary, hexadecimal and octal at once and copies the result to the clipboard.
 
----
-
-## ✨ Features
-
-- 🔢 **Convert Decimal to Binary**: Converts any decimal number into an 8-bit binary representation.
-- 🔠 **Convert Binary to Decimal**: Converts binary numbers back into decimal format.
-- 📋 **Clipboard Support**: Automatically copies results to the clipboard (requires `xclip` on Linux).
-- 🌈 **Colorized Output**: Colored output in the terminal for easy readability.
-
----
-
-## 📥 Installation
-
-### Prerequisites
-
-This script uses `xclip` for clipboard functionality on Linux. Install it with:
-```bash
-sudo apt-get install xclip
-```
-
-### Clone the Repository
-
-Clone this repository to your local machine:
+## Usage
 
 ```bash
-git clone https://github.com/serber1990/binaryConverter.git
-cd binaryConverter/bash
+./binaryConverter.sh            # interactive prompt (q or Ctrl+D to quit)
+./binaryConverter.sh 255        # one-shot
+./binaryConverter.sh 0xFF
+./binaryConverter.sh 0b1010
+./binaryConverter.sh 0o17
 ```
 
----
+Exit codes: `0` success, `1` invalid input, `2` number larger than 2^63-1.
 
-## 🛠 Usage
+## Clipboard
 
-Make the script executable and run it:
+The binary value is copied (the decimal value when the input was binary) using the first available
+tool: `wl-copy` (Wayland), `xclip`, `xsel` or `pbcopy`. Nothing happens if none is installed.
 
-```bash
-chmod +x binary_converter.sh
-./binary_converter.sh
-```
+## Limits
 
-### Options
+Bash integers are signed 64-bit, so the maximum is `9223372036854775807` (`0x7FFFFFFFFFFFFFFF`).
+For bigger numbers use the Python version: `pip install numbase-converter` and run `numbase`.
 
-The script provides a menu with the following options:
-
-1. Convert decimal to binary
-2. Convert binary to decimal
-3. Quit
-
----
-
-## 🎨 Examples
-
-### Convert Decimal to Binary
-
-```plaintext
-Choose an option:
-1. Convert decimal to binary
-2. Convert binary to decimal
-q. To Quit
-> 1
-Enter a decimal number: 45
-
-Binary representation: 00101101
-Binary result copied to clipboard.
-```
-
-### Convert Binary to Decimal
-
-```plaintext
-Choose an option:
-1. Convert decimal to binary
-2. Convert binary to decimal
-q. To Quit
-> 2
-Enter a binary number: 101010
-
-Decimal representation: 42
-Decimal result copied to clipboard.
-```
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 💬 Feedback
-
-If you have any questions, issues, or suggestions, please feel free to open an issue in the repository or contact me directly via GitHub.
-
----
-
-## 🌐 Connect with Me
-
-[![GitHub](https://img.shields.io/badge/GitHub-@serber1990-181717?style=flat-square&logo=github)](https://github.com/serber1990)
-
----
-
-### 🚀 Easily convert between binary and decimal with Binary Converter (Bash Version)!
+See the [main README](../README.md) for more details.

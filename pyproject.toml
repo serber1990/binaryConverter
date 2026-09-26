@@ -1,16 +1,18 @@
 [build-system]
-requires = ["setuptools>=61", "wheel"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "numbase-converter"
-version = "2.0.0"
+dynamic = ["version"]
 description = "Interactive number base converter — decimal, binary, hex and octal in one tool"
 readme = "README.md"
 license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "Serber1990", email = "serber1990@pm.me" }]
-requires-python = ">=3.8"
-dependencies = ["shellcolorize"]
+requires-python = ">=3.9"
+dependencies = ["shellcolorize>=1.1.0"]
+keywords = ["binary", "hexadecimal", "octal", "converter", "cli", "sysadmin"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
@@ -18,13 +20,30 @@ classifiers = [
     "Topic :: Utilities",
 ]
 
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff>=0.4"]
+
 [project.urls]
 Homepage     = "https://github.com/serber1990/binaryConverter"
 "Bug Tracker" = "https://github.com/serber1990/binaryConverter/issues"
 "Source Code" = "https://github.com/serber1990/binaryConverter"
+Changelog    = "https://github.com/serber1990/binaryConverter/blob/main/CHANGELOG.md"
 
 [project.scripts]
 numbase = "numbase:main"
 
 [tool.setuptools]
 py-modules = ["numbase"]
+
+[tool.setuptools.dynamic]
+version = { attr = "numbase.VERSION" }
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py39"
+extend-exclude = ["python/"]
+
+[tool.ruff.lint]
+select = ["E9", "F", "B"]
